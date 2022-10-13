@@ -11,16 +11,26 @@ using System.Web.Http;
 
 namespace Juguetes.API.Controllers
 {
+    /// <summary>
+    /// Clase Controller para el manejo de la informacion.
+    /// </summary>
     
     [RoutePrefix("api/Producto")]
     public class ProductoController : ApiController
     {
         private IMapper mapper;
        private readonly ProductoService productoService = new ProductoService(new ProductoRepository(JuguetesContext.Create()));
+        /// <summary>
+        /// Constructor de la clase controller
+        /// </summary>
         public ProductoController()
         {
             this.mapper = WebApiApplication.MapperConfiguration.CreateMapper();
         }
+        /// <summary>
+        /// Obtiene Todos los Registros
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IHttpActionResult> GetAll()
         {
@@ -28,6 +38,11 @@ namespace Juguetes.API.Controllers
             var productosDTO = productos.Select(x => mapper.Map<ProductoDTO>(x));
             return Ok(productosDTO);
         }
+        /// <summary>
+        /// Obtiene los registros de acuerdo al id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IHttpActionResult> GetById(int id)
         {
@@ -38,6 +53,11 @@ namespace Juguetes.API.Controllers
             var productosDTO = mapper.Map<ProductoDTO>(productos);
             return Ok(productosDTO);
         }
+        /// <summary>
+        /// Inserta un nuevo registro
+        /// </summary>
+        /// <param name="productoDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IHttpActionResult> Post(ProductoDTO productoDTO)
         {
@@ -55,10 +75,14 @@ namespace Juguetes.API.Controllers
 
                 return InternalServerError(ex);
             }
-
-
             
         }
+        /// <summary>
+        /// Modifica registro existente
+        /// </summary>
+        /// <param name="productoDTO"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IHttpActionResult> Put(ProductoDTO productoDTO,int id)
         {
@@ -81,10 +105,12 @@ namespace Juguetes.API.Controllers
 
                 return InternalServerError(ex);
             }
-
-
-
         }
+        /// <summary>
+        /// Elimina registro de acuerdo al id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<IHttpActionResult> Delete(int id)
         {
